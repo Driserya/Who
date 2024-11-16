@@ -5,11 +5,16 @@ using UnityEngine.UI;
 
 public class SlotUI : MonoBehaviour
 {
-    [SerializeField] private Image itemImage;
+    [SerializeField] public Image itemImage;
 
     [SerializeField] private ItemDetails currentItem;
 
     private bool isSelected;
+
+    private void Start()
+    {
+        itemImage = GetComponent<Image>();
+    }
 
     public void SetItem(ItemDetails itemDetails)
     {
@@ -19,7 +24,7 @@ public class SlotUI : MonoBehaviour
         itemImage.SetNativeSize();
     }
 
-    public void SetEmoty()
+    public void SetEmpty()
     {
         this.gameObject.SetActive(false);
     }
