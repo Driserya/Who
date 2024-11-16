@@ -6,14 +6,48 @@ using System;
 
 public class CursorManager : MonoBehaviour
 {
+    [SerializeField] private RectTransform hand;
+
     private Vector3 _mouseWorldPos;
 
-    
+    [SerializeField]private ItemName currentItem;
+
+    private bool holdItem;//是否拿着物品
+
+    private void OnEnable()
+    {
+        GameEventManager.MainInstance.AddEventListening<ItemDetails, bool>("拿取UI当前物品", OnItemSelectedEven);
+    }
+
+    private void OnDisable()
+    {
+        GameEventManager.MainInstance.RemoveEvent<ItemDetails, bool>("拿取UI当前物品", OnItemSelectedEven);
+    }
+
     private void Update()
     {
         _mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y));
 
         Click();
+        HandMove();
+    }
+
+    private void HandMove()
+    {
+        if(hand.gameObject.activeInHierarchy)
+        {
+            hand.position=Input.mousePosition;
+        }
+    }
+
+    private void OnItemSelectedEven(ItemDetails itemDetails,bool isSelected)
+    {
+        holdItem = isSelected;
+        if (isSelected)
+        {
+            currentItem = itemDetails.itemName;
+        }
+        hand.gameObject.SetActive(holdItem);
     }
 
     private bool CanClick()

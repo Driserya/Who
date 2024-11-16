@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class SlotUI : MonoBehaviour
+public class SlotUI : MonoBehaviour,IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] public Image itemImage;
 
     [SerializeField] private ItemDetails currentItem;
 
-    private bool isSelected;
+    [SerializeField] private ItemTooltip toolTip;
+
+    [SerializeField]private bool isSelected;//物品是否选中
 
 
     private void Awake()
@@ -30,4 +33,23 @@ public class SlotUI : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
+    public void OnPointerClick(PointerEventData eventData)//鼠标点击
+    {
+        isSelected = !isSelected;
+        GameEventManager.MainInstance.CallEvent("拿取UI当前物品", currentItem, isSelected);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)//鼠标划入
+    {
+        if(this.gameObject.activeInHierarchy)
+        {
+            toolTip.gameObject.SetActive(true);
+            toolTip.UpdateItemNamee(currentItem);
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)//鼠标划出
+    {
+        toolTip.gameObject.SetActive(false);
+    }
 }

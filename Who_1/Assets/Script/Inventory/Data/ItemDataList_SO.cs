@@ -17,6 +17,8 @@ public class ItemDataList_SO : ScriptableObject
 [System.Serializable]
 public class ItemDetails
 {
+    public string chineseNmae;
+
     public ItemName itemName;
 
     public Sprite itemSprite;

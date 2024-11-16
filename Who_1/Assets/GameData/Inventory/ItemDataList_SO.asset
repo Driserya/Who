@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: ItemDataList_SO
   m_EditorClassIdentifier: 
   ItemDetailsList:
-  - itemName: 1
+  - chineseNmae: "\u4FE1\u7BB1\u94A5\u5319"
+    itemName: 1
     itemSprite: {fileID: 21300000, guid: 926cfd2ba9f0b684f99cb757dca76471, type: 3}
