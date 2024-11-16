@@ -11,7 +11,8 @@ public class SlotUI : MonoBehaviour
 
     private bool isSelected;
 
-    private void Start()
+
+    private void Awake()
     {
         itemImage = GetComponent<Image>();
     }
