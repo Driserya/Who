@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
 public class SlotUI : MonoBehaviour,IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
@@ -17,11 +18,13 @@ public class SlotUI : MonoBehaviour,IPointerClickHandler, IPointerEnterHandler, 
     private void OnEnable()
     {
         GameEventManager.MainInstance.AddEventListening<ItemName>("物品使用", OnItemUsedEvent);
+        GameEventManager.MainInstance.AddEventListening<ItemDetails>("获取当前物品", GetCurrentItem);
     }
 
     private void OnDisable()
     {
         GameEventManager.MainInstance.RemoveEvent<ItemName>("物品使用", OnItemUsedEvent);
+        GameEventManager.MainInstance.RemoveEvent<ItemDetails>("获取当前物品", GetCurrentItem);
     }
 
 
@@ -34,6 +37,7 @@ public class SlotUI : MonoBehaviour,IPointerClickHandler, IPointerEnterHandler, 
     {
         isSelected = false;
         currentItem=null;
+        ChangeItem(0);
     }
 
     public void SetItem(ItemDetails itemDetails)
@@ -41,6 +45,17 @@ public class SlotUI : MonoBehaviour,IPointerClickHandler, IPointerEnterHandler, 
         currentItem=itemDetails;
         this.gameObject.SetActive(true);
         itemImage.sprite= currentItem.itemSprite;
+        itemImage.SetNativeSize();
+    }
+
+    private void GetCurrentItem(ItemDetails itemDetails)
+    {
+        currentItem = itemDetails;
+    }
+    public void ChangeItem(int currentIndex)
+    {
+        GameEventManager.MainInstance.CallEvent("获取", currentIndex);
+        itemImage.sprite = currentItem.itemSprite;
         itemImage.SetNativeSize();
     }
 

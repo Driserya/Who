@@ -12,11 +12,13 @@ public class InventoryManager : Singleton<InventoryManager>
     private void OnEnable()
     {
         GameEventManager.MainInstance.AddEventListening<ItemName>("物品使用", OnItemUsedEvent);
+        GameEventManager.MainInstance.AddEventListening<int>("获取", GetItem);
     }
 
     private void OnDisable()
     {
         GameEventManager.MainInstance.RemoveEvent<ItemName>("物品使用", OnItemUsedEvent);
+        GameEventManager.MainInstance.RemoveEvent<int>("获取", GetItem);
     }
 
     private void OnItemUsedEvent(ItemName itemName)
@@ -42,5 +44,18 @@ public class InventoryManager : Singleton<InventoryManager>
             GameEventManager.MainInstance.CallEvent("物品事件", itemData.GetItemDetails(itemName), itemList.Count - 1);//InventoryUI事件地址
         }
 
+    }
+
+    public void GetItem(int currentIndex)
+    {
+        if (itemList.Count != 0)
+        {
+            GameEventManager.MainInstance.CallEvent("获取当前物品", itemData.GetItemDetails(itemList[currentIndex]));
+        }
+        if (itemList.Count == 0)
+        {
+            ItemDetails test = null;
+            GameEventManager.MainInstance.CallEvent("物品事件", test, -1);
+        }
     }
 }
