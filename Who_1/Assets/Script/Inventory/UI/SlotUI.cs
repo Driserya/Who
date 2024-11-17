@@ -10,14 +10,30 @@ public class SlotUI : MonoBehaviour,IPointerClickHandler, IPointerEnterHandler, 
 
     [SerializeField] private ItemDetails currentItem;
 
-    [SerializeField] private ItemTooltip toolTip;
+    [SerializeField] private ItemTooltip toolTip;//物品信息
 
     [SerializeField]private bool isSelected;//物品是否选中
+
+    private void OnEnable()
+    {
+        GameEventManager.MainInstance.AddEventListening<ItemName>("物品使用", OnItemUsedEvent);
+    }
+
+    private void OnDisable()
+    {
+        GameEventManager.MainInstance.RemoveEvent<ItemName>("物品使用", OnItemUsedEvent);
+    }
 
 
     private void Awake()
     {
         itemImage = GetComponent<Image>();
+    }
+
+    private void OnItemUsedEvent(ItemName itemName)
+    {
+        isSelected = false;
+        currentItem=null;
     }
 
     public void SetItem(ItemDetails itemDetails)

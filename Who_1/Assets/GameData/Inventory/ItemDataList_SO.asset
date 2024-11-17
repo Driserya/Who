@@ -16,3 +16,6 @@ MonoBehaviour:
   - chineseNmae: "\u4FE1\u7BB1\u94A5\u5319"
     itemName: 1
     itemSprite: {fileID: 21300000, guid: 926cfd2ba9f0b684f99cb757dca76471, type: 3}
+  - chineseNmae: "\u8239\u7968"
+    itemName: 2
+    itemSprite: {fileID: 21300000, guid: 494f9efff6c999840891181a933f385a, type: 3}

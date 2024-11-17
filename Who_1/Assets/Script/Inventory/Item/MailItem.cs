@@ -2,12 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MyInterface
+public class MailItem : ItemBase
 {
-    public interface _Click
-    {
-        void Click();
-    }
 
 }
-

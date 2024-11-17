@@ -1,19 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MyInterface;
 
-public class InterActiveBase : MonoBehaviour
+public class InterActiveBase : MonoBehaviour , _Click 
 {
-    [SerializeField] private ItemName requireItem;
+    [SerializeField] private ItemName requireItem;//目标物品
 
-    [SerializeField]private bool isDone;
+    [SerializeField]public bool isDone;//开启状态
 
-    public void CheckItem(ItemName itemName)
+    [SerializeField]private ItemName currentItem;
+
+    private void CheckItem(ItemName itemName)
     {
         if(itemName ==requireItem&&!isDone)
         {
             isDone = true;
             OnClickedAction();
+
+            GameEventManager.MainInstance.CallEvent("物品使用", requireItem);
         }
     }
 
@@ -28,5 +33,18 @@ public class InterActiveBase : MonoBehaviour
     protected virtual void EmptyClicked()
     {
         Debug.Log("空点");
+    }
+
+    public void GetHandItem(ItemName itemName)
+    {
+        currentItem = itemName;
+    }
+
+    public void Click()
+    {
+        if(!isDone)
+        {
+            CheckItem(currentItem);
+        }
     }
 }

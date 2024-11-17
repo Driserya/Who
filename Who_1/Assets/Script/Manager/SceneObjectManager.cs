@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class SceneObjectManager : MonoBehaviour
 {
     private Dictionary<ItemName,bool> itemAvailableDict = new Dictionary<ItemName,bool>();
+    private Dictionary<string,bool> itemAvailableDict2 = new Dictionary<string, bool>();
 
     private void OnEnable()
     {
@@ -32,6 +34,17 @@ public class SceneObjectManager : MonoBehaviour
                 itemAvailableDict.Add(item._itemName, true);
             }
         }
+        foreach (var item in FindObjectsOfType<InterActiveBase>())
+        {
+            if (!itemAvailableDict2.ContainsKey(item.name))
+            {
+                itemAvailableDict2.Add(item.name, item.isDone);
+            }
+            else
+            {
+                itemAvailableDict2[item.name] = item.isDone;
+            }
+        }
     }
 
     private void AfterSceneLoadedEvent()
@@ -45,6 +58,17 @@ public class SceneObjectManager : MonoBehaviour
             else
             {
                 item.gameObject.SetActive(itemAvailableDict[item._itemName]);
+            }
+        }
+        foreach (var item in FindObjectsOfType<InterActiveBase>())
+        {
+            if (!itemAvailableDict2.ContainsKey(item.name))
+            {
+                itemAvailableDict2.Add(item.name, item.isDone);
+            }
+            else
+            {
+                item.isDone=itemAvailableDict2[item.name];
             }
         }
     }

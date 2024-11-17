@@ -17,11 +17,13 @@ public class CursorManager : MonoBehaviour
     private void OnEnable()
     {
         GameEventManager.MainInstance.AddEventListening<ItemDetails, bool>("拿取UI当前物品", OnItemSelectedEven);
+        GameEventManager.MainInstance.AddEventListening<ItemName>("物品使用", OnItemUsedEvent);
     }
 
     private void OnDisable()
     {
         GameEventManager.MainInstance.RemoveEvent<ItemDetails, bool>("拿取UI当前物品", OnItemSelectedEven);
+        GameEventManager.MainInstance.RemoveEvent<ItemName>("物品使用", OnItemUsedEvent);
     }
 
     private void Update()
@@ -30,6 +32,13 @@ public class CursorManager : MonoBehaviour
 
         Click();
         HandMove();
+    }
+
+    private void OnItemUsedEvent(ItemName itemName)
+    {
+        currentItem = ItemName.None;
+        holdItem = false;
+        hand.gameObject.SetActive(holdItem);
     }
 
     private void HandMove()
@@ -59,6 +68,7 @@ public class CursorManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0)&& CanClick())
         {
+            ObjectAtMousePosition().gameObject?.GetComponent<InterActiveBase>()?.GetHandItem(currentItem);
             ObjectAtMousePosition().gameObject.GetComponent<_Click>().Click();
         }
     }
