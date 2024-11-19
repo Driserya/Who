@@ -4,3 +4,9 @@
     Key,
     Mail
 }
+
+public enum GameState
+{
+    Pause,
+    GamePlay
+}

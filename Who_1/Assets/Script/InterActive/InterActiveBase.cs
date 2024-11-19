@@ -20,6 +20,10 @@ public class InterActiveBase : MonoBehaviour , _Click
 
             GameEventManager.MainInstance.CallEvent("物品使用", requireItem);
         }
+        else if(itemName != requireItem && !isDone)
+        {
+            EmptyClicked();
+        }
     }
 
     /// <summary>

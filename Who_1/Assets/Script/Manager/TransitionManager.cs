@@ -14,13 +14,26 @@ public class TransitionManager : Singleton<TransitionManager>
     [SerializeField] private CanvasGroup _fadeCanvasGroup;//遮罩
     [SerializeField] private float fadeTime;//遮罩时间
 
+    private bool canTransition;//场景是否可以切换
+
+    private void OnEnable()
+    {
+        GameEventManager.MainInstance.AddEventListening<GameState>("游戏状态", ChangeGameState);
+    }
+
+    private void OnDisable()
+    {
+        GameEventManager.MainInstance.RemoveEvent<GameState>("游戏状态", ChangeGameState);
+    }
+
     private void Start()
     {
         StartCoroutine(TransitionToScene(string.Empty, startScene));
+        canTransition = true;
     }
     public void Transition(string from,string to)
     {
-        if (_isFade)
+        if (_isFade|| !canTransition)
             return;
         StartCoroutine(TransitionToScene(from, to));//携程执行
     }
@@ -66,4 +79,17 @@ public class TransitionManager : Singleton<TransitionManager>
 
         _isFade = false;
     }
+
+    private void ChangeGameState(GameState gameState)
+    {
+        if(gameState==GameState.GamePlay)
+        {
+            canTransition = true;
+        }
+        else
+        {
+            canTransition = false;  
+        }
+    }
+
 }

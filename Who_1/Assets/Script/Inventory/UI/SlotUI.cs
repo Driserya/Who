@@ -54,9 +54,12 @@ public class SlotUI : MonoBehaviour,IPointerClickHandler, IPointerEnterHandler, 
     }
     public void ChangeItem(int currentIndex)
     {
-        GameEventManager.MainInstance.CallEvent("获取", currentIndex);
-        itemImage.sprite = currentItem.itemSprite;
-        itemImage.SetNativeSize();
+        if (this.gameObject.activeInHierarchy)
+        {
+            GameEventManager.MainInstance.CallEvent("获取", currentIndex);
+            itemImage.sprite = currentItem.itemSprite;
+            itemImage.SetNativeSize();
+        }
     }
 
     public void SetEmpty()
